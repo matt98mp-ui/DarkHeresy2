@@ -1,0 +1,2062 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<link href="icons/icon-192.png" rel="icon" type="image/png"/>
+<base href="./"/>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Inquisitorial Character Codex — Segmentum Archive</title>
+<style>
+
+/* ===== Visual pass: spacing + hierarchy ===== */
+:root{
+  --bg: #0e0e0e;
+  --panel: rgba(255,255,255,0.03);
+  --panel-strong: rgba(255,255,255,0.06);
+  --text: #e6e2dc;
+  --muted: rgba(230,226,220,0.75);
+  --border: rgba(255,255,255,0.10);
+  --border-strong: rgba(255,255,255,0.16);
+}
+
+body{
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.35;
+}
+
+.app-header{
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: linear-gradient(to bottom, rgba(14,14,14,0.98), rgba(14,14,14,0.85));
+  border-bottom: 1px solid var(--border);
+  padding: 12px 10px;
+  backdrop-filter: blur(6px);
+}
+
+.app-header > div{
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section{
+  margin: 14px auto;
+  max-width: 1200px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+}
+
+.section > h2{
+  margin: 0 0 10px 0;
+  font-size: 1.12rem;
+  letter-spacing: 0.2px;
+  opacity: 0.95;
+}
+
+.section details > summary{
+  padding: 6px 0;
+}
+
+label{
+  opacity: 0.92;
+}
+
+label > span, .label, .muted{
+  opacity: var(--muted);
+}
+
+input, select, textarea{
+  background: rgba(255,255,255,0.05);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 6px 8px;
+}
+
+input:focus, select:focus, textarea:focus{
+  outline: 2px solid rgba(200,200,200,0.25);
+  outline-offset: 1px;
+}
+
+.button{
+  border-radius: 10px !important;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.06);
+  padding: 6px 10px;
+}
+
+.button.primary{
+  background: rgba(255,255,255,0.10);
+  border-color: var(--border-strong);
+}
+
+.table-wrap{
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: rgba(0,0,0,0.15);
+  padding: 6px;
+}
+
+table{
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+}
+
+th, td{
+  border: none !important;
+  padding: 8px 8px !important;
+}
+
+thead th{
+  background: rgba(255,255,255,0.05);
+  border-bottom: 1px solid var(--border);
+  font-weight: 700;
+  opacity: 0.95;
+}
+
+tbody tr{
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+tbody tr:hover{
+  background: rgba(255,255,255,0.05);
+}
+
+tbody tr[data-action], tr[data-action]{
+  transition: background 120ms ease, outline 120ms ease;
+}
+
+hr{
+  border: 0;
+  border-top: 1px solid var(--border);
+  margin: 10px 0;
+}
+
+/* Make long pages breathe */
+section + section{
+  margin-top: 12px;
+}
+
+body {font-family: Arial, sans-serif; background:#1a1a1a; color:#f0f0f0; margin:0; padding:0;}
+header {background:#2b2b2b; padding:10px; text-align:center; font-size:24px;}
+section {padding:10px; border-bottom:1px solid #444;}
+select, input {margin:5px;}
+table {width:100%; border-collapse: collapse; margin:10px 0;}
+th, td {border:1px solid #444; padding:5px; text-align:left;}
+th {background:#333;}
+.button {background:#555; color:white; padding:5px 10px; border:none; cursor:pointer; margin:5px;}
+.button:hover {background:#777;}
+textarea {background:#111; color:#f0f0f0; border:1px solid #444;}
+
+/* ===== Mobile/Responsive additions (v18 responsive) ===== */
+.table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.table-wrap table { min-width: 720px; } /* keeps columns readable; scroll on small screens */
+input, select, textarea { max-width: 100%; box-sizing: border-box; }
+
+header { position: sticky; top: 0; z-index: 50; }
+section h2 { margin-top: 0; }
+
+@media (max-width: 700px){
+  header { font-size: 18px; padding: 12px 10px; }
+  section { padding: 10px 10px; }
+  .button { width: 100%; padding: 12px 12px; margin: 6px 0; font-size: 16px; }
+  select, input, textarea { width: 100%; font-size: 16px; padding: 10px; margin: 6px 0; }
+  label { display: block; margin-top: 8px; }
+  /* reduce table text but keep tappable buttons */
+  th, td { padding: 8px; }
+}
+
+/* Info modal fit */
+#infoModal .modal-card{
+  max-height: 85vh;
+  overflow: auto;
+}
+
+/* ====== THEME SYSTEM (v18+) ====== */
+:root{
+  --bg: #0e0e0e;
+  --panel: #141414;
+  --text: #e6e2dc;
+  --muted: rgba(230,226,220,0.85);
+  --header-bg: #1a0000;
+  --header-border: #7b0000;
+  --border: #333;
+  --table-th: #1b1b1b;
+  --table-td: #101010;
+  --input-bg: #0f0f0f;
+  --btn-bg: #3b0000;
+  --btn-hover: #5c0000;
+  --btn-border: #7b0000;
+  --accent: #b00000;
+}
+
+body.theme-inquisition{
+  --bg: #0e0e0e;
+  --panel: #141414;
+  --text: #e6e2dc;
+  --muted: rgba(230,226,220,0.85);
+  --header-bg: #1a0000;
+  --header-border: #7b0000;
+  --border: #333;
+  --table-th: #1b1b1b;
+  --table-td: #101010;
+  --input-bg: #0f0f0f;
+  --btn-bg: #3b0000;
+  --btn-hover: #5c0000;
+  --btn-border: #7b0000;
+  --accent: #b00000;
+}
+
+body.theme-mechanicus{
+  --bg: #0f1412;
+  --panel: #121c18;
+  --text: #d4f2e7;
+  --muted: rgba(212,242,231,0.85);
+  --header-bg: #0b2e1f;
+  --header-border: #1fa87a;
+  --border: #24433a;
+  --table-th: #0d231a;
+  --table-td: #0b1612;
+  --input-bg: #0b1612;
+  --btn-bg: #1fa87a;
+  --btn-hover: #29c38e;
+  --btn-border: #1fa87a;
+  --accent: #1fa87a;
+}
+
+body.theme-chaos{
+  --bg: #050000;
+  --panel: rgba(20,0,0,0.85);
+  --text: #f2dada;
+  --muted: rgba(242,218,218,0.85);
+  --header-bg: #400000;
+  --header-border: #b00000;
+  --border: #3a0000;
+  --table-th: #240000;
+  --table-td: rgba(10,0,0,0.75);
+  --input-bg: rgba(10,0,0,0.75);
+  --btn-bg: #600000;
+  --btn-hover: #8b0000;
+  --btn-border: #b00000;
+  --accent: #b00000;
+}
+
+/* Apply variables */
+body { background: var(--bg) !important; color: var(--text) !important; }
+header { background: var(--header-bg) !important; border-bottom: 2px solid var(--header-border) !important; letter-spacing: 1px; font-weight: 800; }
+section { background: var(--panel) !important; border-bottom: 1px solid var(--border) !important; }
+th { background: var(--table-th) !important; }
+td { background: var(--table-td) !important; }
+select, input, textarea{
+  background: var(--input-bg) !important;
+  color: var(--text) !important;
+  border: 1px solid var(--border) !important;
+}
+.button{
+  background: var(--btn-bg) !important;
+  border: 1px solid var(--btn-border) !important;
+}
+.button:hover{ background: var(--btn-hover) !important; }
+
+/* Codex-y headers */
+h2{
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 4px;
+  margin-top: 0;
+}
+
+/* Touch targets */
+.button, select, input{
+  min-height: 44px;
+}
+
+/* =============================
+   40K GRIMDARK THEME (v8)
+   ============================= */
+:root{
+  --ink: #e6e6e6;
+  --muted: #b8b8b8;
+  --bg: #0b0d10;
+  --panel: #12151b;
+  --panel2: #0f1318;
+  --edge: rgba(255,255,255,.10);
+  --edge2: rgba(255,255,255,.06);
+  --accent: #c1121f;
+  --accent2: #d4af37;
+  --haz: #f2c94c;
+  --haz2: #111;
+  --good: #2ecc71;
+  --bad: #ff5c5c;
+  --shadow: rgba(0,0,0,.55);
+  --radius: 14px;
+  --radius2: 10px;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --goth: ui-serif, Georgia, "Times New Roman", Times, serif;
+}
+
+body{
+  background:
+    radial-gradient(1100px 700px at 15% 10%, rgba(193,18,31,.18), transparent 60%),
+    radial-gradient(900px 600px at 90% 20%, rgba(212,175,55,.10), transparent 55%),
+    radial-gradient(800px 600px at 65% 92%, rgba(193,18,31,.10), transparent 55%),
+    linear-gradient(180deg, #080a0d, #0b0d10 55%, #07090c);
+  color: var(--ink);
+}
+
+body::before{
+  content:"";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: .10;
+  background-image: url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240' viewBox='0 0 240 240'>\
+<defs>\
+  <pattern id='p' width='240' height='240' patternUnits='userSpaceOnUse'>\
+    <path d='M0 120H240' stroke='white' stroke-opacity='.18' stroke-width='2'/>\
+    <path d='M120 0V240' stroke='white' stroke-opacity='.14' stroke-width='2'/>\
+    <g opacity='.18'>\
+      <path d='M120 32l14 8 0 16-14 8-14-8 0-16z' fill='none' stroke='white' stroke-width='2'/>\
+      <path d='M120 176l14 8 0 16-14 8-14-8 0-16z' fill='none' stroke='white' stroke-width='2'/>\
+      <path d='M32 120l8-14h16l8 14-8 14H40z' fill='none' stroke='white' stroke-width='2'/>\
+      <path d='M176 120l8-14h16l8 14-8 14h-16z' fill='none' stroke='white' stroke-width='2'/>\
+      <circle cx='120' cy='120' r='44' fill='none' stroke='white' stroke-width='2' stroke-dasharray='6 10'/>\
+      <circle cx='120' cy='120' r='66' fill='none' stroke='white' stroke-width='2' stroke-dasharray='3 14'/>\
+    </g>\
+  </pattern>\
+</defs>\
+<rect width='100%25' height='100%25' fill='url(%23p)'/>\
+</svg>");
+  background-size: 240px 240px;
+  mix-blend-mode: overlay;
+  filter: contrast(110%);
+  z-index: 0;
+}
+
+#app, .app, main, .container{ position: relative; z-index: 1; }
+
+h1, h2, h3, h4, .title, .section-title, header h1{
+  font-family: var(--goth);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.card, .panel, .box, .modal, .sheet, .section, .tile{
+  background: linear-gradient(180deg, var(--panel), var(--panel2));
+  border: 1px solid var(--edge);
+  border-radius: var(--radius);
+  box-shadow: 0 14px 35px var(--shadow);
+}
+
+input, select, textarea{
+  background: rgba(10,12,15,.85);
+  color: var(--ink);
+  border: 1px solid var(--edge);
+  border-radius: 10px;
+  outline: none;
+}
+input:focus, select:focus, textarea:focus{
+  border-color: rgba(193,18,31,.55);
+  box-shadow: 0 0 0 3px rgba(193,18,31,.18);
+}
+
+button, .btn{
+  background: linear-gradient(180deg, rgba(212,175,55,.18), rgba(212,175,55,.06));
+  color: var(--ink);
+  border: 1px solid rgba(212,175,55,.32);
+  border-radius: 12px;
+  box-shadow: 0 10px 22px rgba(0,0,0,.35);
+  transition: transform .06s ease, box-shadow .18s ease, border-color .18s ease, filter .18s ease;
+}
+button:hover, .btn:hover{ border-color: rgba(212,175,55,.55); filter: brightness(1.05); }
+button:active, .btn:active{ transform: translateY(1px); box-shadow: 0 6px 14px rgba(0,0,0,.35); }
+button.primary, .btn.primary, .btn-accent{
+  background: linear-gradient(180deg, rgba(193,18,31,.95), rgba(122,10,18,.92));
+  border-color: rgba(193,18,31,.75);
+  box-shadow: 0 12px 26px rgba(193,18,31,.16), 0 14px 35px rgba(0,0,0,.45);
+}
+button.primary:hover, .btn.primary:hover, .btn-accent:hover{ filter: brightness(1.06); }
+
+button.danger, .btn.danger{
+  background: linear-gradient(180deg, rgba(255,92,92,.92), rgba(140,20,20,.92));
+  border-color: rgba(255,92,92,.65);
+}
+
+table{ border-collapse: collapse; background: rgba(0,0,0,.10); }
+th{
+  font-family: var(--goth);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  background: rgba(193,18,31,.16);
+  border-bottom: 1px solid rgba(193,18,31,.35);
+}
+td, th{ border-bottom: 1px solid var(--edge2); }
+tr:hover td{ background: rgba(212,175,55,.06); }
+
+.chip, .tag, .pill{
+  background: rgba(193,18,31,.16);
+  border: 1px solid rgba(193,18,31,.26);
+  border-radius: 999px;
+  padding: .18rem .55rem;
+}
+
+.modal header, .modal .modal-header{
+  border-bottom: 1px solid rgba(193,18,31,.25);
+  box-shadow: 0 10px 20px rgba(0,0,0,.25);
+}
+.modal header::after, .modal .modal-header::after{
+  content:"";
+  display:block;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(193,18,31,.65), transparent);
+  margin-top: 8px;
+}
+
+*::-webkit-scrollbar{ width: 10px; height:10px; }
+*::-webkit-scrollbar-track{ background: rgba(0,0,0,.25); }
+*::-webkit-scrollbar-thumb{
+  background: rgba(193,18,31,.35);
+  border: 1px solid rgba(212,175,55,.18);
+  border-radius: 999px;
+}
+
+.hazard{
+  background: repeating-linear-gradient(135deg, var(--haz) 0 10px, var(--haz2) 10px 20px);
+  border: 1px solid rgba(242,201,76,.45);
+  border-radius: 10px;
+  height: 10px;
+  opacity: .9;
+}
+
+.header, header{ position: relative; }
+header::before{
+  content:"I";
+  position:absolute;
+  right: 16px;
+  top: -8px;
+  font-family: var(--goth);
+  font-weight: 800;
+  font-size: 92px;
+  opacity: .08;
+  color: rgba(212,175,55,.75);
+  transform: rotate(6deg);
+  pointer-events: none;
+}
+
+a{ color: rgba(212,175,55,.95); }
+a:hover{ color: rgba(242,201,76,1); }
+
+footer, .footer{ opacity: .85; font-family: var(--mono); letter-spacing: .02em; }
+:focus-visible{ outline: 2px solid rgba(212,175,55,.75); outline-offset: 2px; }
+
+/* =============================
+   THEME SYSTEM (v9)
+   Usage: <html data-theme="...">
+   ============================= */
+:root{
+  --ink: #e6e6e6;
+  --muted: #b8b8b8;
+  --bg: #0b0d10;
+  --panel: #12151b;
+  --panel2: #0f1318;
+  --edge: rgba(255,255,255,.10);
+  --edge2: rgba(255,255,255,.06);
+  --accent: #c1121f;
+  --accent2: #d4af37;
+  --haz: #f2c94c;
+  --haz2: #111;
+  --good: #2ecc71;
+  --bad: #ff5c5c;
+  --shadow: rgba(0,0,0,.55);
+  --radius: 14px;
+  --radius2: 10px;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --goth: ui-serif, Georgia, "Times New Roman", Times, serif;
+}
+
+/* Default: Inquisitorial Grimdark */
+html[data-theme="inquisition"]{
+  --ink: #e6e6e6;
+  --muted: #b8b8b8;
+  --bg: #0b0d10;
+  --panel: #12151b;
+  --panel2: #0f1318;
+  --edge: rgba(255,255,255,.10);
+  --edge2: rgba(255,255,255,.06);
+  --accent: #c1121f;      /* inquisitorial red */
+  --accent2: #d4af37;     /* gilt */
+  --haz: #f2c94c;
+  --haz2: #111;
+}
+
+/* Hive-World: industrial amber + soot */
+html[data-theme="hive"]{
+  --ink: #f0ece6;
+  --muted: #cbbfb2;
+  --bg: #0b0a08;
+  --panel: #17130f;
+  --panel2:#110e0b;
+  --edge: rgba(255,230,200,.10);
+  --edge2: rgba(255,230,200,.06);
+  --accent:#f59e0b;       /* amber */
+  --accent2:#7c2d12;      /* rust */
+  --haz:#f59e0b;
+  --haz2:#0b0a08;
+}
+
+/* Mechanicus: martian red + cog-brass */
+html[data-theme="mechanicus"]{
+  --ink:#efe7de;
+  --muted:#cbbfb2;
+  --bg:#120707;
+  --panel:#1b0e0e;
+  --panel2:#140b0b;
+  --edge: rgba(255,255,255,.10);
+  --edge2: rgba(255,255,255,.06);
+  --accent:#b91c1c;       /* martian red */
+  --accent2:#c0a46b;      /* brass */
+  --haz:#f2c94c;
+  --haz2:#120707;
+}
+
+/* Voidship: cold blue + steel */
+html[data-theme="voidship"]{
+  --ink:#e7eef7;
+  --muted:#b9c7da;
+  --bg:#070b12;
+  --panel:#0d1420;
+  --panel2:#0a111b;
+  --edge: rgba(180,210,255,.12);
+  --edge2: rgba(180,210,255,.07);
+  --accent:#60a5fa;       /* void blue */
+  --accent2:#93c5fd;      /* pale blue */
+  --haz:#f2c94c;
+  --haz2:#070b12;
+}
+
+/* Sanctioned Light: parchment + ink (readable for long sessions) */
+html[data-theme="parchment"]{
+  --ink:#171717;
+  --muted:#444;
+  --bg:#f7f1e3;
+  --panel:#fffaf0;
+  --panel2:#f3ead6;
+  --edge: rgba(0,0,0,.14);
+  --edge2: rgba(0,0,0,.08);
+  --accent:#7c2d12;       /* red-brown */
+  --accent2:#b45309;      /* gold-brown */
+  --haz:#7c2d12;
+  --haz2:#f7f1e3;
+}
+
+/* Theme-aware background */
+body{
+  background:
+    radial-gradient(1100px 700px at 15% 10%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 60%),
+    radial-gradient(900px 600px at 90% 20%, color-mix(in srgb, var(--accent2) 12%, transparent), transparent 55%),
+    radial-gradient(800px 600px at 65% 92%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 55%),
+    linear-gradient(180deg, color-mix(in srgb, var(--bg) 88%, #000), var(--bg) 55%, color-mix(in srgb, var(--bg) 86%, #000));
+  color: var(--ink);
+}
+
+/* THEME-AWARE BUTTONS (v10) END */
+
+/* =============================
+   INFO BUTTON RESTYLE (v14)
+   Targets ℹ️ buttons via data-action patterns
+   ============================= */
+button[data-action="info-selected"],
+button[data-action^="info-"],
+button[data-action*="info-"]{
+  width: 40px;
+  height: 40px;
+  padding: 0 !important;
+  border-radius: 999px !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--goth);
+  font-weight: 800;
+  letter-spacing: .02em;
+  background:
+    radial-gradient(circle at 30% 30%,
+      color-mix(in srgb, var(--accent2) 35%, transparent),
+      transparent 55%),
+    linear-gradient(180deg,
+      color-mix(in srgb, var(--panel) 80%, #000),
+      color-mix(in srgb, var(--panel2) 92%, #000)
+    );
+  border: 1px solid color-mix(in srgb, var(--accent2) 55%, transparent) !important;
+  box-shadow: 0 10px 22px rgba(0,0,0,.35);
+  line-height: 1;
+}
+
+/* Make the icon feel like a stamped seal */
+button[data-action="info-selected"]::before,
+button[data-action^="info-"]::before,
+button[data-action*="info-"]::before{
+  content:"";
+  position:absolute;
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  border: 1px dashed color-mix(in srgb, var(--accent2) 38%, transparent);
+  opacity: .8;
+  transform: rotate(12deg);
+}
+
+/* Ensure positioning context */
+button[data-action="info-selected"],
+button[data-action^="info-"],
+button[data-action*="info-"]{
+  position: relative;
+}
+
+/* Replace raw glyph sizing */
+button[data-action="info-selected"],
+button[data-action^="info-"],
+button[data-action*="info-"]{
+  font-size: 16px;
+}
+
+/* Hover: red wax glow */
+button[data-action="info-selected"]:hover,
+button[data-action^="info-"]:hover,
+button[data-action*="info-"]:hover{
+  border-color: color-mix(in srgb, var(--accent) 65%, transparent) !important;
+  box-shadow:
+    0 14px 28px rgba(0,0,0,.45),
+    0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent);
+  filter: brightness(1.08);
+}
+
+/* Active press */
+button[data-action="info-selected"]:active,
+button[data-action^="info-"]:active,
+button[data-action*="info-"]:active{
+  transform: translateY(1px);
+}
+
+/* Optional: hide the emoji styling differences by enforcing text rendering */
+button[data-action="info-selected"],
+button[data-action^="info-"],
+button[data-action*="info-"]{
+  text-rendering: geometricPrecision;
+}
+
+/* Keep small buttons from breaking layout in tight tables */
+.table-wrap button[data-action="info-selected"],
+.table-wrap button[data-action^="info-"],
+.table-wrap button[data-action*="info-"]{
+  width: 34px;
+  height: 34px;
+}
+
+/* =============================
+   PRINT & TABLE MODE (v17)
+   ============================= */
+@media print{
+  body::before{ display:none !important; }
+  header, #gmPanel{ display:none !important; }
+  button, select{ display:none !important; }
+  input, textarea{ border:1px solid #999 !important; background:#fff !important; color:#111 !important; }
+  body{ background:#fff !important; color:#111 !important; }
+  section{ break-inside: avoid; page-break-inside: avoid; }
+}
+html.table-mode button, html.table-mode .btn{ font-size:1.05rem; padding:10px 14px; }
+
+/* ===== Glance validation ===== */
+.input-warn{
+  box-shadow: 0 0 0 2px rgba(255, 180, 0, 0.22);
+  border-radius: 10px;
+}
+.warn-text{
+  font-size: 12px;
+  opacity: 0.75;
+  margin-top: 6px;
+}
+
+/* ===== THEME: Grimdark Dataslate (Official) ===== */
+:root{
+  --bg: #070709;
+  --panel: rgba(18,16,18,0.82);
+  --panel-strong: rgba(26,22,26,0.88);
+  --text: #e8e1d6;
+  --muted: rgba(232,225,214,0.72);
+  --ink: rgba(232,225,214,0.9);
+  --accent: #7b0000;
+  --accent2: #c49a2c; /* brass */
+  --border: rgba(196,154,44,0.22);
+  --border-strong: rgba(196,154,44,0.35);
+  --shadow: rgba(0,0,0,0.55);
+}
+
+body{
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  background:
+    radial-gradient(1200px 600px at 20% -10%, rgba(123,0,0,0.22), transparent 60%),
+    radial-gradient(1000px 700px at 90% 0%, rgba(196,154,44,0.16), transparent 55%),
+    radial-gradient(900px 700px at 40% 120%, rgba(123,0,0,0.16), transparent 55%),
+    linear-gradient(180deg, #050506, #09090b 35%, #070709);
+  color: var(--text);
+}
+
+/* Subtle scanlines/noise */
+body::before{
+  content:"";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.08;
+  background:
+    repeating-linear-gradient(
+      180deg,
+      rgba(255,255,255,0.00) 0px,
+      rgba(255,255,255,0.00) 2px,
+      rgba(255,255,255,0.06) 3px
+    );
+  mix-blend-mode: overlay;
+  z-index: 1;
+}
+body::after{
+  content:"";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.10;
+  background-image:
+    radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1px);
+  background-size: 3px 3px;
+  mix-blend-mode: soft-light;
+  z-index: 1;
+}
+
+.app-header{
+  background:
+    linear-gradient(180deg, rgba(12,10,12,0.98), rgba(10,9,11,0.80)),
+    radial-gradient(800px 120px at 50% 0%, rgba(123,0,0,0.35), transparent 60%);
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+}
+
+.section{
+  background: var(--panel);
+  border: 1px solid var(--border);
+  box-shadow: 0 10px 30px var(--shadow);
+}
+
+.section > h2{
+  font-family: ui-serif, Georgia, "Times New Roman", Times, serif;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  font-size: 1.02rem;
+  opacity: 0.96;
+}
+.section > h2::after{
+  content:"";
+  display:block;
+  margin-top: 8px;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(196,154,44,0.0), rgba(196,154,44,0.32), rgba(196,154,44,0.0));
+}
+
+.pill{
+  background: rgba(26,22,26,0.70);
+  border: 1px solid rgba(196,154,44,0.22);
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.35);
+}
+
+.vital{
+  background: rgba(26,22,26,0.78);
+  border: 1px solid rgba(196,154,44,0.22);
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.35);
+}
+.vital .value{
+  color: var(--accent2);
+  text-shadow: 0 0 12px rgba(196,154,44,0.10);
+}
+
+input, select, textarea{
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(196,154,44,0.20);
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.35);
+}
+input::placeholder, textarea::placeholder{
+  color: rgba(232,225,214,0.45);
+}
+
+.button{
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+  border: 1px solid rgba(196,154,44,0.22);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.35), inset 0 0 0 1px rgba(0,0,0,0.35);
+}
+.button:hover{
+  border-color: rgba(196,154,44,0.35);
+  transform: translateY(-1px);
+}
+.button:active{
+  transform: translateY(0px);
+}
+.button.primary{
+  background:
+    radial-gradient(120% 140% at 50% 0%, rgba(123,0,0,0.55), rgba(123,0,0,0.10)),
+    linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+  border-color: rgba(123,0,0,0.55);
+}
+
+.table-wrap{
+  background: rgba(0,0,0,0.22);
+  border: 1px solid rgba(196,154,44,0.18);
+}
+thead th{
+  background: rgba(123,0,0,0.18);
+  border-bottom: 1px solid rgba(196,154,44,0.22);
+}
+tbody tr:hover{
+  background: rgba(196,154,44,0.06);
+}
+tr.selected{
+  outline: 2px solid rgba(196,154,44,0.35) !important;
+  background: rgba(196,154,44,0.05);
+}
+
+a, a:visited{
+  color: rgba(196,154,44,0.95);
+}
+.input-warn{
+  box-shadow: 0 0 0 2px rgba(196,154,44,0.25);
+}
+
+#infoModal > div{
+  border: 1px solid rgba(196,154,44,0.22) !important;
+  box-shadow: 0 18px 48px rgba(0,0,0,0.55) !important;
+}
+
+/* Keep content above scanline overlays */
+header, section, #infoModal{
+  position: relative;
+  z-index: 2;
+}
+
+/* ===== Theme variants ===== */
+body[data-theme="modern"]{
+  --bg:#0f1115;
+  --panel:rgba(255,255,255,0.06);
+  --text:#f2f2f2;
+  --border:rgba(255,255,255,0.12);
+  background:linear-gradient(180deg,#0f1115,#141821);
+}
+body[data-theme="terminal"]{
+  --bg:#020402;
+  --panel:rgba(0,40,0,0.55);
+  --text:#b7ffb7;
+  --border:rgba(0,255,0,0.25);
+  background:
+    radial-gradient(800px 500px at 50% 0%, rgba(0,255,0,0.15), transparent 60%),
+    linear-gradient(180deg,#020402,#040804);
+  font-family: ui-monospace, monospace;
+}
+
+/* ===== Fonts + density system ===== */
+:root{
+  --font-body: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  --font-heading: ui-serif, Georgia, "Times New Roman", Times, serif;
+
+  /* Density tokens (default = comfortable) */
+  --section-pad-y: 12px;
+  --section-pad-x: 14px;
+  --section-gap: 14px;
+  --control-pad-y: 6px;
+  --control-pad-x: 8px;
+  --button-pad-y: 6px;
+  --button-pad-x: 10px;
+  --cell-pad-y: 8px;
+  --cell-pad-x: 8px;
+}
+
+body{
+  font-family: var(--font-body);
+}
+
+.section{
+  margin: var(--section-gap) auto;
+  padding: var(--section-pad-y) var(--section-pad-x);
+}
+
+.section > h2{
+  font-family: var(--font-heading);
+}
+
+input, select, textarea{
+  padding: var(--control-pad-y) var(--control-pad-x);
+}
+
+.button{
+  padding: var(--button-pad-y) var(--button-pad-x);
+}
+
+th, td{
+  padding: var(--cell-pad-y) var(--cell-pad-x) !important;
+}
+
+/* Density presets */
+body[data-density="compact"]{
+  --section-pad-y: 10px;
+  --section-pad-x: 12px;
+  --section-gap: 10px;
+  --control-pad-y: 5px;
+  --control-pad-x: 7px;
+  --button-pad-y: 5px;
+  --button-pad-x: 9px;
+  --cell-pad-y: 6px;
+  --cell-pad-x: 7px;
+}
+
+body[data-density="spacious"]{
+  --section-pad-y: 16px;
+  --section-pad-x: 18px;
+  --section-gap: 18px;
+  --control-pad-y: 8px;
+  --control-pad-x: 10px;
+  --button-pad-y: 8px;
+  --button-pad-x: 12px;
+  --cell-pad-y: 10px;
+  --cell-pad-x: 10px;
+}
+
+/* Per-theme font packs */
+body[data-theme="grimdark"]{
+  --font-body: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  --font-heading: ui-serif, Georgia, "Times New Roman", Times, serif;
+}
+body[data-theme="terminal"]{
+  --font-body: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  --font-heading: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+}
+body[data-theme="modern"]{
+  --font-body: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  --font-heading: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+/* Per-theme iconography */
+/* Headings get a small glyph */
+body[data-theme="grimdark"] .section > h2::before{
+  content: "⛨ ";
+  color: rgba(196,154,44,0.95);
+}
+body[data-theme="terminal"] .section > h2::before{
+  content: "> ";
+  color: rgba(0,255,0,0.85);
+}
+body[data-theme="modern"] .section > h2::before{
+  content: "• ";
+  color: rgba(255,255,255,0.65);
+}
+
+/* Buttons: subtle leading icon based on action type */
+.button[data-action="undo"]::before,
+.button[data-action="redo"]::before,
+.button[data-action="browser-prev"]::before,
+.button[data-action="browser-next"]::before,
+.button[data-action="browser-equip"]::before{
+  margin-right: 6px;
+  opacity: 0.9;
+}
+
+body[data-theme="grimdark"] .button[data-action="undo"]::before{ content: "↶"; color: var(--accent2); }
+body[data-theme="grimdark"] .button[data-action="redo"]::before{ content: "↷"; color: var(--accent2); }
+body[data-theme="grimdark"] .button[data-action="browser-prev"]::before{ content: "⟵"; color: var(--accent2); }
+body[data-theme="grimdark"] .button[data-action="browser-next"]::before{ content: "⟶"; color: var(--accent2); }
+body[data-theme="grimdark"] .button[data-action="browser-equip"]::before{ content: "⚙"; color: var(--accent2); }
+
+body[data-theme="terminal"] .button[data-action="undo"]::before{ content: "U"; color: rgba(0,255,0,0.9); }
+body[data-theme="terminal"] .button[data-action="redo"]::before{ content: "R"; color: rgba(0,255,0,0.9); }
+body[data-theme="terminal"] .button[data-action="browser-prev"]::before{ content: "<"; color: rgba(0,255,0,0.9); }
+body[data-theme="terminal"] .button[data-action="browser-next"]::before{ content: ">"; color: rgba(0,255,0,0.9); }
+body[data-theme="terminal"] .button[data-action="browser-equip"]::before{ content: "+"; color: rgba(0,255,0,0.9); }
+
+body[data-theme="modern"] .button[data-action="undo"]::before{ content: "↶"; color: rgba(255,255,255,0.8); }
+body[data-theme="modern"] .button[data-action="redo"]::before{ content: "↷"; color: rgba(255,255,255,0.8); }
+body[data-theme="modern"] .button[data-action="browser-prev"]::before{ content: "←"; color: rgba(255,255,255,0.8); }
+body[data-theme="modern"] .button[data-action="browser-next"]::before{ content: "→"; color: rgba(255,255,255,0.8); }
+body[data-theme="modern"] .button[data-action="browser-equip"]::before{ content: "✓"; color: rgba(255,255,255,0.8); }
+
+/* ===== Extended action icons ===== */
+.button[data-action]::before{ margin-right: 6px; opacity: 0.9; }
+
+/* Neutral icon mapping (overridden per theme where desired) */
+.button[data-action="add-item"]::before{ content: "＋"; }
+.button[data-action="remove-inventory"]::before{ content: "🗑"; }
+.button[data-action="inventory-inc"]::before{ content: "＋"; }
+.button[data-action="inventory-dec"]::before{ content: "−"; }
+.button[data-action="save-slot"]::before{ content: "💾"; }
+.button[data-action="load-slot"]::before{ content: "⤓"; }
+.button[data-action="export-character"]::before{ content: "⤴"; }
+.button[data-action="import-character"]::before{ content: "⤵"; }
+.button[data-action="roll-dice"]::before{ content: "🎲"; }
+.button[data-action="roll-save"]::before{ content: "✓"; }
+.button[data-action="info-close"]::before{ content: "✕"; }
+.button[data-action="info-equip-weapon"]::before{ content: "⚔"; }
+.button[data-action="info-equip-armor"]::before{ content: "🛡"; }
+.button[data-action="info-learn-power"]::before{ content: "✦"; }
+.button[data-action="info-learn-talent"]::before{ content: "★"; }
+.button[data-action="reset-theme"]::before{ content: "↺"; }
+
+/* Theme-specific refinements */
+body[data-theme="terminal"] .button[data-action="remove-inventory"]::before{ content: "DEL"; }
+body[data-theme="terminal"] .button[data-action="save-slot"]::before{ content: "S"; }
+body[data-theme="terminal"] .button[data-action="load-slot"]::before{ content: "L"; }
+body[data-theme="terminal"] .button[data-action="export-character"]::before{ content: "OUT"; }
+body[data-theme="terminal"] .button[data-action="import-character"]::before{ content: "IN"; }
+body[data-theme="terminal"] .button[data-action="roll-dice"]::before{ content: "RNG"; }
+body[data-theme="terminal"] .button[data-action="info-equip-weapon"]::before{ content: "EQ"; }
+body[data-theme="terminal"] .button[data-action="info-equip-armor"]::before{ content: "AR"; }
+body[data-theme="terminal"] .button[data-action="info-learn-power"]::before{ content: "PSY"; }
+body[data-theme="terminal"] .button[data-action="info-learn-talent"]::before{ content: "TLT"; }
+body[data-theme="terminal"] .button[data-action="reset-theme"]::before{ content: "RST"; }
+
+body[data-theme="grimdark"] .button[data-action="reset-theme"]::before{ content: "⟲"; color: var(--accent2); }
+
+.button[data-action="reset-ui"]::before{ content: "⟲"; }
+body[data-theme="terminal"] .button[data-action="reset-ui"]::before{ content: "CLR"; }
+
+/* ===== THEME POLISH: Modern Official ===== */
+body[data-theme="modern"]{
+  --bg:#0f1115;
+  --panel:rgba(255,255,255,0.06);
+  --panel-strong:rgba(255,255,255,0.09);
+  --text:#f3f4f6;
+  --muted:rgba(243,244,246,0.72);
+  --border:rgba(255,255,255,0.14);
+  --border-strong:rgba(255,255,255,0.20);
+  --accent:#6aa9ff;
+  --accent2:#9ad0ff;
+  background: linear-gradient(180deg,#0f1115,#141826 65%, #0f1115);
+  letter-spacing: 0px;
+}
+body[data-theme="modern"] .app-header{
+  background: linear-gradient(180deg, rgba(15,17,21,0.98), rgba(15,17,21,0.86));
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.28);
+}
+body[data-theme="modern"] .section{
+  background: rgba(255,255,255,0.055);
+  border: 1px solid var(--border);
+  box-shadow: 0 10px 26px rgba(0,0,0,0.35);
+}
+body[data-theme="modern"] .section > h2{
+  font-family: var(--font-heading);
+  text-transform: none;
+  letter-spacing: 0.2px;
+  font-size: 1.05rem;
+}
+body[data-theme="modern"] .section > h2::after{
+  background: linear-gradient(90deg, rgba(255,255,255,0), rgba(106,169,255,0.28), rgba(255,255,255,0));
+}
+body[data-theme="modern"] .button{
+  background: rgba(255,255,255,0.06);
+  border: 1px solid var(--border);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.28);
+  text-transform:none;
+  letter-spacing:0px;
+}
+body[data-theme="modern"] .button.primary{
+  background: rgba(106,169,255,0.18);
+  border-color: rgba(106,169,255,0.35);
+}
+body[data-theme="modern"] input, body[data-theme="modern"] select, body[data-theme="modern"] textarea{
+  background: rgba(255,255,255,0.045);
+  border: 1px solid var(--border);
+}
+body[data-theme="modern"] thead th{
+  background: rgba(255,255,255,0.06);
+  border-bottom: 1px solid var(--border);
+  text-transform:none;
+  letter-spacing:0px;
+  font-size: 0.85rem;
+}
+body[data-theme="modern"] tbody tr:hover{
+  background: rgba(106,169,255,0.08);
+}
+body[data-theme="modern"] tr.selected{
+  outline: 2px solid rgba(106,169,255,0.35) !important;
+  background: rgba(106,169,255,0.06);
+}
+
+/* ===== THEME POLISH: Terminal Refined ===== */
+body[data-theme="terminal"]{
+  --bg:#020402;
+  --panel:rgba(0,28,0,0.62);
+  --panel-strong:rgba(0,38,0,0.72);
+  --text:#c9ffcf;
+  --muted:rgba(201,255,207,0.68);
+  --border:rgba(0,255,0,0.18);
+  --border-strong:rgba(0,255,0,0.28);
+  --accent:#2dff67;
+  --accent2:#a5ffb9;
+  background:
+    radial-gradient(900px 600px at 50% 0%, rgba(45,255,103,0.10), transparent 60%),
+    linear-gradient(180deg,#020402,#040a04 70%, #020402);
+}
+/* reduce glow/noise for readability */
+body[data-theme="terminal"]::before{ opacity:0.035; }
+body[data-theme="terminal"]::after{ opacity:0.04; }
+body[data-theme="terminal"] .app-header{
+  background: linear-gradient(180deg, rgba(2,4,2,0.98), rgba(2,4,2,0.84));
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+}
+body[data-theme="terminal"] .section{
+  background: var(--panel);
+  border: 1px solid var(--border);
+  box-shadow: 0 10px 26px rgba(0,0,0,0.55);
+}
+body[data-theme="terminal"] .section > h2{
+  text-transform: none;
+  letter-spacing: 0px;
+  font-size: 1.0rem;
+}
+body[data-theme="terminal"] .section > h2::after{
+  background: linear-gradient(90deg, rgba(0,255,0,0), rgba(45,255,103,0.26), rgba(0,255,0,0));
+}
+body[data-theme="terminal"] .button{
+  background: rgba(0,255,0,0.05);
+  border: 1px solid var(--border);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.55);
+}
+body[data-theme="terminal"] .button.primary{
+  background: rgba(45,255,103,0.12);
+  border-color: rgba(45,255,103,0.28);
+}
+body[data-theme="terminal"] input, body[data-theme="terminal"] select, body[data-theme="terminal"] textarea{
+  background: rgba(0,255,0,0.03);
+  border: 1px solid var(--border);
+}
+body[data-theme="terminal"] thead th{
+  background: rgba(0,255,0,0.06);
+  border-bottom: 1px solid rgba(0,255,0,0.14);
+  text-transform: none;
+  letter-spacing: 0px;
+  font-size: 0.85rem;
+}
+body[data-theme="terminal"] tbody tr:hover{
+  background: rgba(45,255,103,0.08);
+}
+body[data-theme="terminal"] tr.selected{
+  outline: 2px solid rgba(45,255,103,0.28) !important;
+  background: rgba(45,255,103,0.06);
+}
+
+/* ===== Align Grimdark label (official) without overriding your grimdark block ===== */
+body[data-theme="grimdark"] .section > h2{
+  letter-spacing: 1.1px;
+}
+
+
+/* ===== Mobile polish (safe, CSS-only) ===== */
+@media (max-width: 768px) {
+  body { font-size: 14px; }
+
+  header { flex-wrap: wrap; gap: 8px; }
+
+  .section {
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+
+  .table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  table { min-width: 520px; }
+
+  .button {
+    padding: 10px 14px;
+    min-height: 44px;
+  }
+
+  input, select, textarea {
+    min-height: 44px;
+  }
+
+  .glance-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .browser-toolbar,
+  .browser-pagination {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+}
+
+
+</style>
+
+<script>
+/* =============================
+   Theme system (v9)
+   ============================= */
+(function(){
+  const KEY = "icc_theme";
+  const DEFAULT_THEME = "inquisition";
+  const root = document.documentElement;
+
+  function applyTheme(theme){
+    const t = theme || DEFAULT_THEME;
+    root.setAttribute("data-theme", t);
+    // Update meta theme-color for installed PWA
+    const meta = document.querySelector('meta[name="theme-color"]');
+    const colors = {
+      inquisition: "#0b0d10",
+      hive: "#0b0a08",
+      mechanicus: "#120707",
+      voidship: "#070b12",
+      parchment: "#f7f1e3"
+    };
+    if (meta && colors[t]) meta.setAttribute("content", colors[t]);
+  }
+
+  function loadTheme(){
+    const stored = localStorage.getItem(KEY);
+    applyTheme(stored || DEFAULT_THEME);
+    const sel = document.getElementById("themeSelect");
+    if (sel) sel.value = stored || DEFAULT_THEME;
+  }
+
+  window.__ICC_THEME__ = { applyTheme, loadTheme };
+
+  document.addEventListener("DOMContentLoaded", () => {
+    loadTheme();
+
+    const themeSel = document.getElementById("themeSelect");
+    if (themeSel){
+      themeSel.addEventListener("change", (e) => {
+        const t = e.target.value;
+        localStorage.setItem(KEY, t);
+        applyTheme(t);
+      });
+    }
+
+    const resetBtn = document.getElementById("themeResetBtn");
+    if (resetBtn){
+      resetBtn.addEventListener("click", () => {
+        localStorage.removeItem(KEY);
+        applyTheme(DEFAULT_THEME);
+        if (themeSel) themeSel.value = DEFAULT_THEME;
+      });
+    }
+  });
+})()
+</script>
+
+<link href="manifest.json" rel="manifest"/>
+<meta content="#1a0000" name="theme-color"/>
+<script defer="True" src="data/talents.js"></script>
+<script defer="True" src="data/weaponMods.js"></script>
+</head>
+<body>
+<header class="app-header">Inquisitorial Character Codex
+<div style="margin-top:8px; display:flex; gap:8px; justify-content:center;"><button type="button" class="button" data-action="undo" disabled>Undo</button><button type="button" class="button" data-action="redo" disabled>Redo</button></div>
+
+<div style="display:flex; gap:8px; align-items:center; justify-content:flex-end; margin-top:6px;">
+  <label style="opacity:.8;">Theme</label>
+  <select id="themeSelect" class="button">
+
+    <option value="grimdark">Grimdark Dataslate (Official)</option>
+    <option value="modern">Modern Slate (Official)</option>
+    <option value="terminal">Cogitator Terminal (Refined)</option>
+  </select>
+  <label style="opacity:.8; margin-left:10px;">Density</label>
+  <select id="densitySelect" class="button">
+    <option value="compact">Compact</option>
+    <option value="comfortable" selected>Comfortable</option>
+    <option value="spacious">Spacious</option>
+  </select>
+  <button type="button" class="button" data-action="reset-theme">Reset Theme</button>
+<button type="button" class="button" data-action="reset-ui">Reset UI</button>
+</div>
+</header>
+
+<section class="section" id="glanceSection">
+  <h2>Character at a glance</h2>
+  <div class="glance-grid">
+    <div class="glance-main">
+      <div class="glance-name"><input id="glanceNameInput" type="text" placeholder="Character name" style="width:100%; font-size:1.5rem; font-weight:700; background:transparent; border:1px solid rgba(255,255,255,0.12); padding:6px 8px; border-radius:10px;"/></div>
+      <div class="glance-meta">
+<div class="warn-text" id="careerWarn" style="display:none;">⚠️ Not in list (custom value will still be saved)</div>
+<div class="warn-text" id="homeworldWarn" style="display:none;">⚠️ Not in list (custom value will still be saved)</div>
+
+        <span class="pill">Career: <select id="glanceCareerSelect" style="background:transparent; border:0; color:inherit; outline:none; max-width:220px;"></select><input id="glanceCareerOther" type="text" placeholder="Custom…" style="display:none; width:160px; background:transparent; border:0; color:inherit; outline:none;"/></span>
+        <span class="pill">Rank/Level: <input id="glanceRankInput" type="number" inputmode="numeric" style="width:90px; background:transparent; border:0; color:inherit; outline:none;"/></span>
+        <span class="pill">Homeworld: <select id="glanceHomeworldSelect" style="background:transparent; border:0; color:inherit; outline:none; max-width:220px;"></select><input id="glanceHomeworldOther" type="text" placeholder="Custom…" style="display:none; width:160px; background:transparent; border:0; color:inherit; outline:none;"/></span>
+      </div>
+    </div>
+    <div class="glance-vitals">
+      <div class="vital"><div class="label">Wounds</div><div class="value"><input id="glanceWoundsInput" type="number" inputmode="numeric" style="width:100%; background:transparent; border:0; color:inherit; outline:none; font-size:1.25rem; font-weight:700;"/></div></div>
+      <div class="vital"><div class="label">Fate</div><div class="value"><input id="glanceFateInput" type="number" inputmode="numeric" style="width:100%; background:transparent; border:0; color:inherit; outline:none; font-size:1.25rem; font-weight:700;"/></div></div>
+      <div class="vital"><div class="label">Corruption</div><div class="value"><input id="glanceCorruptionInput" type="number" inputmode="numeric" style="width:100%; background:transparent; border:0; color:inherit; outline:none; font-size:1.25rem; font-weight:700;"/></div></div>
+      <div class="vital"><div class="label">Insanity</div><div class="value"><input id="glanceInsanityInput" type="number" inputmode="numeric" style="width:100%; background:transparent; border:0; color:inherit; outline:none; font-size:1.25rem; font-weight:700;"/></div></div>
+    </div>
+  </div>
+  <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
+    <button type="button" class="button" data-action="recalc-hp">Recalc HP</button>
+    <button type="button" class="button" data-action="print-sheet">Print</button>
+  </div>
+</section>
+
+<section class="section section" id="gmPanel" style="display:none;">
+<h2>GM Control Panel</h2>
+<div class="card" style="margin:10px 0 12px; padding:12px;">
+<div style="font-family:var(--goth); letter-spacing:.08em; text-transform:uppercase;">Encounter Threat</div>
+<div id="gm_threatSummary" style="margin-top:6px; opacity:.9;">Threat: —</div>
+</div>
+<div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin:8px 0 12px;">
+<label style="display:flex; gap:8px; align-items:center;">
+    Rules Preset:
+    <select id="gm_rulesPreset">
+<option value="narrative">Narrative</option>
+<option value="heroic">Heroic</option>
+<option value="lethal">Lethal</option>
+<option value="custom">Custom</option>
+</select>
+</label>
+<span style="font-size:12px; opacity:0.8;">Select a preset, then tweak below if you want. Choosing a preset overwrites the related toggles.</span>
+</div>
+<div style="display:flex; flex-wrap:wrap; gap:12px; align-items:center;">
+<button class="button" data-action="toggle-gm" type="button">Close GM Panel</button>
+<button class="button" data-action="apply-gm-preset" data-preset="balanced" type="button">Preset: Balanced</button>
+<button class="button" data-action="apply-gm-preset" data-preset="strict" type="button">Preset: Strict Imperium</button>
+<button class="button" data-action="apply-gm-preset" data-preset="roguetrader" type="button">Preset: Rogue Trader</button>
+<button class="button" data-action="reset-gm" type="button">Reset GM Settings</button>
+</div>
+<div style="margin-top:10px; display:grid; gap:8px;">
+<label><input id="gm_allowAbhumans" type="checkbox"/> Allow Abhumans</label>
+<label><input id="gm_allowXenos" type="checkbox"/> Allow Xenos</label>
+<label><input id="gm_enforceSocialPenalty" type="checkbox"/> Enforce Social Penalties (stigma, access)</label>
+<label><input id="gm_restrictGearByFaction" type="checkbox"/> Restrict Gear by Faction/Legality</label>
+<label><input id="gm_ignoreRestrictions" type="checkbox"/> GM Override: Ignore Race/Class Restrictions</label>
+<label style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">Restriction Display:
+      <select id="gm_restrictionDisplay">
+<option value="hide">Hide Restricted Items</option>
+<option value="lock">Show Locked (🔒)</option>
+</select>
+</label>
+<hr style="border-color:#444; width:100%;"/>
+<label><input id="gm_useCrits" type="checkbox"/> Crits on Natural 20</label>
+<label><input id="gm_useFumbles" type="checkbox"/> Fumbles on Natural 1</label>
+<label><input id="gm_useAdvDis" type="checkbox"/> Enable Advantage/Disadvantage Rolls</label>
+<label><input id="gm_sessionLock" type="checkbox"/> Session Lock (read-only players)</label>
+<hr style="border-color:#444; width:100%;"/>
+<label>
+      Warp Severity:
+      <select id="gm_warpSeverity">
+<option value="low">Low</option>
+<option value="normal">Normal</option>
+<option value="brutal">Brutal</option>
+</select>
+</label>
+<label>
+      Theme:
+      <select id="gm_theme">
+<option value="inquisition">Grimdark Inquisition</option>
+<option value="mechanicus">Adeptus Mechanicus</option>
+<option value="chaos">Chaos / Heretek</option>
+</select>
+</label>
+<div style="opacity:0.85; font-size:12px; margin-top:6px;">
+      Settings are stored locally in your browser (localStorage).
+    </div>
+</div>
+<div id="browserResults" class="table-wrap"></div>
+</section>
+<section class="section section">
+<button class="button" data-action="toggle-gm" type="button">GM Panel</button>
+</section>
+<section class="section section">
+<h2>Character Info</h2>
+<label>Class:</label>
+<select id="classSelect"></select> <button class="button" data-action="info-selected" data-kind="class" type="button">ℹ️</button>
+<label>Background:</label>
+<select id="backgroundSelect"></select> <button class="button" data-action="info-selected" data-kind="background" type="button">ℹ️</button>
+<label>Species / Race:</label>
+<select id="raceSelect"></select>
+<button class="button" data-action="info-selected" data-kind="race" type="button">ℹ️</button>
+<div class="table-wrap" style="margin-top:8px;">
+<table id="abilityTable" style="min-width: 420px;">
+<tr><th>Ability</th><th>Score</th><th>Mod</th></tr>
+<tr><td><strong>STR</strong></td><td><input id="str" inputmode="numeric" type="number" value="10"/><div class="abil-breakdown" id="str_breakdown"></div></td><td><span id="mod_str">+0</span></td></tr>
+<tr><td><strong>DEX</strong></td><td><input id="dex" inputmode="numeric" type="number" value="10"/><div class="abil-breakdown" id="dex_breakdown"></div></td><td><span id="mod_dex">+0</span></td></tr>
+<tr><td><strong>CON</strong></td><td><input id="con" inputmode="numeric" type="number" value="10"/><div class="abil-breakdown" id="con_breakdown"></div></td><td><span id="mod_con">+0</span></td></tr>
+<tr><td><strong>INT</strong></td><td><input id="int" inputmode="numeric" type="number" value="10"/><div class="abil-breakdown" id="int_breakdown"></div></td><td><span id="mod_int">+0</span></td></tr>
+<tr><td><strong>WIS</strong></td><td><input id="wis" inputmode="numeric" type="number" value="10"/><div class="abil-breakdown" id="wis_breakdown"></div></td><td><span id="mod_wis">+0</span></td></tr>
+<tr><td><strong>CHA</strong></td><td><input id="cha" inputmode="numeric" type="number" value="10"/><div class="abil-breakdown" id="cha_breakdown"></div></td><td><span id="mod_cha">+0</span></td></tr>
+</table>
+</div>
+<details style="margin-top:10px;">
+<summary style="cursor:pointer; font-weight:700;">5e Ability Score Builder</summary>
+<div class="card" style="margin-top:8px; padding:12px;">
+<div style="display:flex; gap:10px; flex-wrap:wrap; align-items:end;">
+  <button type="button" class="button" data-action="abil-point-buy-reset">Reset to 8</button>
+  <button type="button" class="button" data-action="abil-standard-array">Standard Array</button>
+  <button type="button" class="button primary" data-action="abil-roll-4d6">Roll 4d6 (drop low)</button>
+</div>
+<div class="table-wrap" style="margin-top:10px;">
+<table style="min-width:520px;">
+<tr><th>System</th><th>Notes</th></tr>
+<tr><td>Point Buy</td><td>Starts at 8. Costs: 9(1),10(2),11(3),12(4),13(5),14(7),15(9). Total budget 27.</td></tr>
+<tr><td>Racial Bonuses</td><td>Apply after choosing your race (your race stat mods already affect the sheet).</td></tr>
+</table>
+</div>
+<div style="margin-top:10px; opacity:.9;">
+<strong>Point Buy Remaining:</strong> <span id="pbRemaining">27</span>
+</div>
+</div>
+</details>
+<div class="grid3" style="margin-top:10px; align-items:end;">
+<label>Level
+    <input id="levelInput" inputmode="numeric" max="20" min="1" type="number" value="1"/>
+</label>
+<label>Proficiency Bonus
+    <input disabled="" id="profBonusDisplay" type="text" value="+2"/>
+</label>
+<label>Hit Die
+    <input disabled="" id="hitDieDisplay" type="text" value="d8"/>
+</label>
+</div>
+<div class="grid3" style="margin-top:8px; align-items:end;">
+<label>Max HP
+    <input id="maxHpInput" inputmode="numeric" min="1" type="number" value="10"/>
+</label>
+<label>Current HP
+    <input id="curHpInput" inputmode="numeric" min="0" type="number" value="10"/>
+</label>
+</div>
+<div class="table-wrap" style="margin-top:10px;">
+<table id="derivedTable" style="min-width: 520px;">
+<tr><th>Derived</th><th>Value</th><th>Notes</th></tr>
+<tr><td><strong>Initiative</strong></td><td><span id="derived_init">+0</span></td><td>DEX mod + bonuses</td></tr>
+<tr><td><strong>Carry Capacity</strong></td><td><span id="derived_carry">0</span></td><td>15 × STR (+ bonuses)</td></tr>
+<tr><td><strong>Save DC</strong></td><td><span id="derived_savedc">10</span></td><td>8 + PROF + ability (class)</td></tr>
+<tr><td><strong>Next Milestone</strong></td><td><span id="derived_nextmilestone">—</span></td><td>ASI / Feature reminder</td></tr>
+</table>
+</div>
+<details style="margin-top:10px;">
+<summary style="cursor:pointer; font-weight:700;">Saving Throws</summary>
+<div class="table-wrap" style="margin-top:8px;">
+<table id="saveTable" style="min-width: 520px;">
+<tr><th>Save</th><th>Ability</th><th>Prof?</th><th>Total</th><th>Roll</th></tr>
+<tr><td>STR Save</td><td><span id="save_abil_STR">+0</span></td><td><input id="saveProf_STR" type="checkbox"/></td><td><span id="save_total_STR">+0</span></td><td><button class="button" data-ability="STR" data-action="roll-save" type="button">Roll</button></td></tr>
+<tr><td>DEX Save</td><td><span id="save_abil_DEX">+0</span></td><td><input id="saveProf_DEX" type="checkbox"/></td><td><span id="save_total_DEX">+0</span></td><td><button class="button" data-ability="DEX" data-action="roll-save" type="button">Roll</button></td></tr>
+<tr><td>CON Save</td><td><span id="save_abil_CON">+0</span></td><td><input id="saveProf_CON" type="checkbox"/></td><td><span id="save_total_CON">+0</span></td><td><button class="button" data-ability="CON" data-action="roll-save" type="button">Roll</button></td></tr>
+<tr><td>INT Save</td><td><span id="save_abil_INT">+0</span></td><td><input id="saveProf_INT" type="checkbox"/></td><td><span id="save_total_INT">+0</span></td><td><button class="button" data-ability="INT" data-action="roll-save" type="button">Roll</button></td></tr>
+<tr><td>WIS Save</td><td><span id="save_abil_WIS">+0</span></td><td><input id="saveProf_WIS" type="checkbox"/></td><td><span id="save_total_WIS">+0</span></td><td><button class="button" data-ability="WIS" data-action="roll-save" type="button">Roll</button></td></tr>
+<tr><td>CHA Save</td><td><span id="save_abil_CHA">+0</span></td><td><input id="saveProf_CHA" type="checkbox"/></td><td><span id="save_total_CHA">+0</span></td><td><button class="button" data-ability="CHA" data-action="roll-save" type="button">Roll</button></td></tr>
+</table>
+</div>
+</details>
+<details style="margin-top:10px;">
+<summary style="cursor:pointer; font-weight:700;">Skills</summary>
+<p style="font-size:12px; opacity:0.85; margin:6px 0 0;">Toggle Trained to add proficiency. Rolls go to the Dice Log.</p>
+<div class="table-wrap" style="margin-top:8px;">
+<table id="skillsTable" style="min-width: 720px;">
+<tr><th>Skill</th><th>Ability</th><th>Abil</th><th>Trained?</th><th>Total</th><th>Roll</th></tr>
+</table>
+</div>
+</details>
+<details style="margin-top:10px;">
+<summary style="cursor:pointer; font-weight:700;">Class Features</summary>
+<div class="grid2" style="margin-top:8px; align-items:end;">
+<label>New Feature
+      <input id="featureInput" placeholder="e.g., Gun Kata, Warp Sense, Omnissiah's Blessing"/>
+</label>
+</div>
+<ul id="featureList" style="margin-top:8px;"></ul>
+</details>
+<details style="margin-top:10px;">
+<summary style="cursor:pointer; font-weight:700;">Talents &amp; Feats</summary>
+<div class="grid2" style="align-items:end; margin-top:8px;">
+<label>Talent Path
+      <select id="talentTreeSelect"></select>
+</label>
+<label>Available Talents
+      <select id="talentSelect"></select>
+</label>
+<div style="display:flex; gap:8px; flex-wrap:wrap; align-items:end;">
+<button class="button" data-action="info-selected" data-kind="talent" type="button">ℹ️</button>
+</div>
+</div>
+<div class="table-wrap" style="margin-top:8px;">
+<table id="talentTable" style="min-width:520px;">
+<tr><th>Talent</th><th>Tier</th><th>Prereq</th><th>Tags</th><th>Actions</th></tr>
+</table>
+</div>
+</details>
+</section>
+<section class="section section">
+<h2>Inventory</h2>
+
+<div class="grid3" style="margin:8px 0; align-items:end;">
+  <label>Search
+    <input id="inventorySearch" type="text" placeholder="filter inventory..."/>
+  </label>
+  <label>Sort
+    <select id="inventorySort">
+      <option value="name">Name</option>
+      <option value="category">Category</option>
+      <option value="weight">Weight</option>
+    </select>
+  </label>
+  <label style="display:flex; gap:8px; align-items:center; margin-top:22px;">
+    <input id="inventoryGroup" type="checkbox" checked/>
+    Group by category
+  </label>
+</div>
+
+<select id="itemSelect"></select> <button class="button" data-action="browse" data-kind="gear" type="button">Browse</button> <button class="button" data-action="info-selected" data-kind="gear" type="button">ℹ️</button>
+<button class="button" data-action="add-item">Add Item</button>
+<div class="table-wrap">
+<table id="inventoryTable">
+<tr><th>Item</th><th>Weight</th><th>Traits</th><th>Actions</th></tr>
+</table>
+</div>
+<p>Total Weight: <span id="totalWeight">0</span></p>
+<p>Encumbrance: <span id="encumbrance">Light</span></p>
+</section>
+<section class="section section">
+<h2>Weapons (3 Slots) — Selected Slot: <span id="selectedWeaponSlotLabel">1</span></h2>
+<select id="weaponSelect"></select> <button class="button" data-action="browse" data-kind="weapon" type="button">Browse</button> <button class="button" data-action="info-selected" data-kind="weapon" type="button">ℹ️</button>
+<button class="button" data-action="equip-weapon-slot">Equip</button>
+<div class="table-wrap">
+<table id="weaponTable">
+<tr><th>Slot</th><th>Weapon</th><th>Damage</th><th>Traits</th><th>Actions</th></tr>
+</table>
+</div>
+<details style="margin-top:10px;">
+<summary style="cursor:pointer; font-weight:700;">Weapon Mods &amp; Attachments</summary>
+<div class="grid3" style="margin-top:8px; align-items:end;">
+<label>Target Slot
+      <select id="weaponModSlotSelect"></select>
+</label>
+<label>Attachment
+      <select id="weaponModSelect"></select>
+</label>
+<div style="display:flex; gap:8px; flex-wrap:wrap; align-items:end;">
+<button class="button" data-action="info-selected" data-kind="weaponmod" type="button">ℹ️</button>
+<button class="button primary" data-action="attach-weapon-mod" type="button">Attach</button>
+</div>
+</div>
+<p style="margin:8px 0 0; opacity:.85;">Attachments apply simple bonuses to rolls and display under each weapon slot.</p>
+</details>
+<div class="grid3" style="margin-top:10px; align-items:end;">
+<label>Level
+    <input id="levelInput__dup2" inputmode="numeric" max="20" min="1" type="number" value="1"/>
+</label>
+<label>Proficiency Bonus
+    <input disabled="" id="profBonusDisplay__dup2" type="text" value="+2"/>
+</label>
+<label>Hit Die
+    <input disabled="" id="hitDieDisplay__dup2" type="text" value="d8"/>
+</label>
+</div>
+<div class="grid3" style="margin-top:8px; align-items:end;">
+<label>Max HP
+    <input id="maxHpInput__dup2" inputmode="numeric" min="1" type="number" value="10"/>
+</label>
+<label>Current HP
+    <input id="curHpInput__dup2" inputmode="numeric" min="0" type="number" value="10"/>
+</label>
+</div>
+<div class="table-wrap" style="margin-top:10px;">
+<table id="derivedTable__dup2" style="min-width: 520px;">
+<tr><th>Derived</th><th>Value</th><th>Notes</th></tr>
+<tr><td><strong>Initiative</strong></td><td><span id="derived_init__dup2">+0</span></td><td>DEX mod + bonuses</td></tr>
+<tr><td><strong>Carry Capacity</strong></td><td><span id="derived_carry__dup2">0</span></td><td>15 × STR (+ bonuses)</td></tr>
+<tr><td><strong>Save DC</strong></td><td><span id="derived_savedc__dup2">10</span></td><td>8 + PROF + ability (class)</td></tr>
+<tr><td><strong>Next Milestone</strong></td><td><span id="derived_nextmilestone__dup2">—</span></td><td>ASI / Feature reminder</td></tr>
+</table>
+</div>
+<details style="margin-top:10px;">
+<summary style="cursor:pointer; font-weight:700;">Saving Throws</summary>
+<div class="table-wrap" style="margin-top:8px;">
+<table id="saveTable__dup2" style="min-width: 520px;">
+<tr><th>Save</th><th>Ability</th><th>Prof?</th><th>Total</th><th>Roll</th></tr>
+<tr><td>STR Save</td><td><span id="save_abil_STR__dup2">+0</span></td><td><input id="saveProf_STR__dup2" type="checkbox"/></td><td><span id="save_total_STR__dup2">+0</span></td><td><button class="button" data-ability="STR" data-action="roll-save" type="button">Roll</button></td></tr>
+<tr><td>DEX Save</td><td><span id="save_abil_DEX__dup2">+0</span></td><td><input id="saveProf_DEX__dup2" type="checkbox"/></td><td><span id="save_total_DEX__dup2">+0</span></td><td><button class="button" data-ability="DEX" data-action="roll-save" type="button">Roll</button></td></tr>
+<tr><td>CON Save</td><td><span id="save_abil_CON__dup2">+0</span></td><td><input id="saveProf_CON__dup2" type="checkbox"/></td><td><span id="save_total_CON__dup2">+0</span></td><td><button class="button" data-ability="CON" data-action="roll-save" type="button">Roll</button></td></tr>
+<tr><td>INT Save</td><td><span id="save_abil_INT__dup2">+0</span></td><td><input id="saveProf_INT__dup2" type="checkbox"/></td><td><span id="save_total_INT__dup2">+0</span></td><td><button class="button" data-ability="INT" data-action="roll-save" type="button">Roll</button></td></tr>
+<tr><td>WIS Save</td><td><span id="save_abil_WIS__dup2">+0</span></td><td><input id="saveProf_WIS__dup2" type="checkbox"/></td><td><span id="save_total_WIS__dup2">+0</span></td><td><button class="button" data-ability="WIS" data-action="roll-save" type="button">Roll</button></td></tr>
+<tr><td>CHA Save</td><td><span id="save_abil_CHA__dup2">+0</span></td><td><input id="saveProf_CHA__dup2" type="checkbox"/></td><td><span id="save_total_CHA__dup2">+0</span></td><td><button class="button" data-ability="CHA" data-action="roll-save" type="button">Roll</button></td></tr>
+</table>
+</div>
+</details>
+<details style="margin-top:10px;">
+<summary style="cursor:pointer; font-weight:700;">Skills</summary>
+<p style="font-size:12px; opacity:0.85; margin:6px 0 0;">Toggle Trained to add proficiency. Rolls go to the Dice Log.</p>
+<div class="table-wrap" style="margin-top:8px;">
+<table id="skillsTable__dup2" style="min-width: 720px;">
+<tr><th>Skill</th><th>Ability</th><th>Abil</th><th>Trained?</th><th>Total</th><th>Roll</th></tr>
+</table>
+</div>
+</details>
+<details style="margin-top:10px;">
+<summary style="cursor:pointer; font-weight:700;">Class Features</summary>
+<div class="grid2" style="margin-top:8px; align-items:end;">
+<label>New Feature
+      <input id="featureInput__dup2" placeholder="e.g., Gun Kata, Warp Sense, Omnissiah's Blessing"/>
+</label>
+</div>
+<ul id="featureList__dup2" style="margin-top:8px;"></ul>
+</details>
+</section>
+<section class="section section">
+<h2>Armor</h2>
+<select id="armorSelect"></select> <button class="button" data-action="browse" data-kind="armor" type="button">Browse</button> <button class="button" data-action="info-selected" data-kind="armor" type="button">ℹ️</button>
+<button class="button" data-action="equip-armor">Equip</button>
+<p>Armor Class (AC): <span id="ac">10</span></p>
+<p>Equipped Armor: <span id="equippedArmor">None</span>
+</p>
+</section>
+<section class="section section">
+<h2>Psychic Powers</h2>
+<select id="psychicSelect"></select> <button class="button" data-action="info-selected" data-kind="psychic" type="button">ℹ️</button>
+<button class="button" data-action="learn-power">Learn Power</button>
+<div class="table-wrap">
+<table id="psychicTable">
+<tr><th>Power</th><th>Warp Cost</th><th>Traits</th><th>Actions</th></tr>
+</table>
+</div>
+<div class="grid3" style="margin-top:10px; align-items:end;">
+<label>Level
+    <input id="levelInput__dup3" inputmode="numeric" max="20" min="1" type="number" value="1"/>
+</label>
+<label>Proficiency Bonus
+    <input disabled="" id="profBonusDisplay__dup3" type="text" value="+2"/>
+</label>
+<label>Hit Die
+    <input disabled="" id="hitDieDisplay__dup3" type="text" value="d8"/>
+</label>
+</div>
+<div class="grid3" style="margin-top:8px; align-items:end;">
+<label>Max HP
+    <input id="maxHpInput__dup3" inputmode="numeric" min="1" type="number" value="10"/>
+</label>
+<label>Current HP
+    <input id="curHpInput__dup3" inputmode="numeric" min="0" type="number" value="10"/>
+</label>
+</div>
+<div class="table-wrap" style="margin-top:10px;">
+<table id="derivedTable__dup3" style="min-width: 520px;">
+<tr><th>Derived</th><th>Value</th><th>Notes</th></tr>
+<tr><td><strong>Initiative</strong></td><td><span id="derived_init__dup3">+0</span></td><td>DEX mod + bonuses</td></tr>
+<tr><td><strong>Carry Capacity</strong></td><td><span id="derived_carry__dup3">0</span></td><td>15 × STR (+ bonuses)</td></tr>
+<tr><td><strong>Save DC</strong></td><td><span id="derived_savedc__dup3">10</span></td><td>8 + PROF + ability (class)</td></tr>
+<tr><td><strong>Next Milestone</strong></td><td><span id="derived_nextmilestone__dup3">—</span></td><td>ASI / Feature reminder</td></tr>
+</table>
+</div>
+<details style="margin-top:10px;">
+<summary style="cursor:pointer; font-weight:700;">Saving Throws</summary>
+<div class="table-wrap" style="margin-top:8px;">
+<table id="saveTable__dup3" style="min-width: 520px;">
+<tr><th>Save</th><th>Ability</th><th>Prof?</th><th>Total</th><th>Roll</th></tr>
+<tr><td>STR Save</td><td><span id="save_abil_STR__dup3">+0</span></td><td><input id="saveProf_STR__dup3" type="checkbox"/></td><td><span id="save_total_STR__dup3">+0</span></td><td><button class="button" data-ability="STR" data-action="roll-save" type="button">Roll</button></td></tr>
+<tr><td>DEX Save</td><td><span id="save_abil_DEX__dup3">+0</span></td><td><input id="saveProf_DEX__dup3" type="checkbox"/></td><td><span id="save_total_DEX__dup3">+0</span></td><td><button class="button" data-ability="DEX" data-action="roll-save" type="button">Roll</button></td></tr>
+<tr><td>CON Save</td><td><span id="save_abil_CON__dup3">+0</span></td><td><input id="saveProf_CON__dup3" type="checkbox"/></td><td><span id="save_total_CON__dup3">+0</span></td><td><button class="button" data-ability="CON" data-action="roll-save" type="button">Roll</button></td></tr>
+<tr><td>INT Save</td><td><span id="save_abil_INT__dup3">+0</span></td><td><input id="saveProf_INT__dup3" type="checkbox"/></td><td><span id="save_total_INT__dup3">+0</span></td><td><button class="button" data-ability="INT" data-action="roll-save" type="button">Roll</button></td></tr>
+<tr><td>WIS Save</td><td><span id="save_abil_WIS__dup3">+0</span></td><td><input id="saveProf_WIS__dup3" type="checkbox"/></td><td><span id="save_total_WIS__dup3">+0</span></td><td><button class="button" data-ability="WIS" data-action="roll-save" type="button">Roll</button></td></tr>
+<tr><td>CHA Save</td><td><span id="save_abil_CHA__dup3">+0</span></td><td><input id="saveProf_CHA__dup3" type="checkbox"/></td><td><span id="save_total_CHA__dup3">+0</span></td><td><button class="button" data-ability="CHA" data-action="roll-save" type="button">Roll</button></td></tr>
+</table>
+</div>
+</details>
+<details style="margin-top:10px;">
+<summary style="cursor:pointer; font-weight:700;">Skills</summary>
+<p style="font-size:12px; opacity:0.85; margin:6px 0 0;">Toggle Trained to add proficiency. Rolls go to the Dice Log.</p>
+<div class="table-wrap" style="margin-top:8px;">
+<table id="skillsTable__dup3" style="min-width: 720px;">
+<tr><th>Skill</th><th>Ability</th><th>Abil</th><th>Trained?</th><th>Total</th><th>Roll</th></tr>
+</table>
+</div>
+</details>
+<details style="margin-top:10px;">
+<summary style="cursor:pointer; font-weight:700;">Class Features</summary>
+<div class="grid2" style="margin-top:8px; align-items:end;">
+<label>New Feature
+      <input id="featureInput__dup3" placeholder="e.g., Gun Kata, Warp Sense, Omnissiah's Blessing"/>
+</label>
+</div>
+<ul id="featureList__dup3" style="margin-top:8px;"></ul>
+</details>
+</section>
+<section class="section section">
+<h2>Combat Tracker</h2>
+<div class="card" style="margin: 10px 0 12px; padding: 12px;">
+<div style="display:flex; gap:10px; flex-wrap:wrap; align-items:end;">
+<label style="min-width:220px;">Your Weapon Slot
+      <select id="atk_weaponSlot"></select>
+</label>
+<label style="min-width:220px;">Target
+      <select id="atk_target"></select>
+</label>
+</div>
+<p style="margin:8px 0 0; opacity:.85;">Rolls hit + damage, applies AP/DR, updates HP, and triggers injury at 0 HP.</p>
+</div>
+<div class="card" style="margin: 10px 0 12px; padding: 12px;">
+<div style="display:flex; gap:10px; flex-wrap:wrap; align-items:end;">
+<label style="flex:1; min-width:240px;">Bestiary (Add to Combat)
+      <select id="bestiarySelect"></select>
+</label>
+<div style="display:flex; gap:8px; flex-wrap:wrap;">
+<button class="button" data-action="info-selected" data-kind="bestiary" type="button">ℹ️</button>
+</div>
+</div>
+</div>
+<div class="table-wrap">
+<table id="combatTable">
+<tr><th>Name</th><th>HP</th><th>Initiative</th><th>AC</th><th>Weapon</th><th>Notes</th><th>Actions</th></tr>
+</table>
+</div>
+<div class="grid3" style="margin-top:10px; align-items:end;">
+<label>Level
+    <input id="levelInput__dup4" inputmode="numeric" max="20" min="1" type="number" value="1"/>
+</label>
+<label>Proficiency Bonus
+    <input disabled="" id="profBonusDisplay__dup4" type="text" value="+2"/>
+</label>
+<label>Hit Die
+    <input disabled="" id="hitDieDisplay__dup4" type="text" value="d8"/>
+</label>
+</div>
+<div class="grid3" style="margin-top:8px; align-items:end;">
+<label>Max HP
+    <input id="maxHpInput__dup4" inputmode="numeric" min="1" type="number" value="10"/>
+</label>
+<label>Current HP
+    <input id="curHpInput__dup4" inputmode="numeric" min="0" type="number" value="10"/>
+</label>
+</div>
+<div class="table-wrap" style="margin-top:10px;">
+<table id="derivedTable__dup4" style="min-width: 520px;">
+<tr><th>Derived</th><th>Value</th><th>Notes</th></tr>
+<tr><td><strong>Initiative</strong></td><td><span id="derived_init__dup4">+0</span></td><td>DEX mod + bonuses</td></tr>
+<tr><td><strong>Carry Capacity</strong></td><td><span id="derived_carry__dup4">0</span></td><td>15 × STR (+ bonuses)</td></tr>
+<tr><td><strong>Save DC</strong></td><td><span id="derived_savedc__dup4">10</span></td><td>8 + PROF + ability (class)</td></tr>
+<tr><td><strong>Next Milestone</strong></td><td><span id="derived_nextmilestone__dup4">—</span></td><td>ASI / Feature reminder</td></tr>
+</table>
+</div>
+<details style="margin-top:10px;">
+<summary style="cursor:pointer; font-weight:700;">Saving Throws</summary>
+<div class="table-wrap" style="margin-top:8px;">
+<table id="saveTable__dup4" style="min-width: 520px;">
+<tr><th>Save</th><th>Ability</th><th>Prof?</th><th>Total</th><th>Roll</th></tr>
+<tr><td>STR Save</td><td><span id="save_abil_STR__dup4">+0</span></td><td><input id="saveProf_STR__dup4" type="checkbox"/></td><td><span id="save_total_STR__dup4">+0</span></td><td><button class="button" data-ability="STR" data-action="roll-save" type="button">Roll</button></td></tr>
+<tr><td>DEX Save</td><td><span id="save_abil_DEX__dup4">+0</span></td><td><input id="saveProf_DEX__dup4" type="checkbox"/></td><td><span id="save_total_DEX__dup4">+0</span></td><td><button class="button" data-ability="DEX" data-action="roll-save" type="button">Roll</button></td></tr>
+<tr><td>CON Save</td><td><span id="save_abil_CON__dup4">+0</span></td><td><input id="saveProf_CON__dup4" type="checkbox"/></td><td><span id="save_total_CON__dup4">+0</span></td><td><button class="button" data-ability="CON" data-action="roll-save" type="button">Roll</button></td></tr>
+<tr><td>INT Save</td><td><span id="save_abil_INT__dup4">+0</span></td><td><input id="saveProf_INT__dup4" type="checkbox"/></td><td><span id="save_total_INT__dup4">+0</span></td><td><button class="button" data-ability="INT" data-action="roll-save" type="button">Roll</button></td></tr>
+<tr><td>WIS Save</td><td><span id="save_abil_WIS__dup4">+0</span></td><td><input id="saveProf_WIS__dup4" type="checkbox"/></td><td><span id="save_total_WIS__dup4">+0</span></td><td><button class="button" data-ability="WIS" data-action="roll-save" type="button">Roll</button></td></tr>
+<tr><td>CHA Save</td><td><span id="save_abil_CHA__dup4">+0</span></td><td><input id="saveProf_CHA__dup4" type="checkbox"/></td><td><span id="save_total_CHA__dup4">+0</span></td><td><button class="button" data-ability="CHA" data-action="roll-save" type="button">Roll</button></td></tr>
+</table>
+</div>
+</details>
+<details style="margin-top:10px;">
+<summary style="cursor:pointer; font-weight:700;">Skills</summary>
+<p style="font-size:12px; opacity:0.85; margin:6px 0 0;">Toggle Trained to add proficiency. Rolls go to the Dice Log.</p>
+<div class="table-wrap" style="margin-top:8px;">
+<table id="skillsTable__dup4" style="min-width: 720px;">
+<tr><th>Skill</th><th>Ability</th><th>Abil</th><th>Trained?</th><th>Total</th><th>Roll</th></tr>
+</table>
+</div>
+</details>
+<details style="margin-top:10px;">
+<summary style="cursor:pointer; font-weight:700;">Class Features</summary>
+<div class="grid2" style="margin-top:8px; align-items:end;">
+<label>New Feature
+      <input id="featureInput__dup4" placeholder="e.g., Gun Kata, Warp Sense, Omnissiah's Blessing"/>
+</label>
+</div>
+<ul id="featureList__dup4" style="margin-top:8px;"></ul>
+</details>
+</section>
+<section class="section section">
+<h2>NPC Quick Builder</h2>
+<div class="grid2" style="align-items:end;">
+<label>
+    Archetype
+    <select id="npcArchetype"></select>
+</label>
+<label>
+    Name
+    <input id="npcName" placeholder="Cultist, Guardsman, etc."/>
+</label>
+</div>
+<div class="grid3" style="align-items:end;">
+<label>Count <input id="npcCount" inputmode="numeric" min="1" type="number" value="1"/></label>
+<label>Bonus Init <input id="npcInitBonus" inputmode="numeric" type="number" value="0"/></label>
+<label>Bonus HP <input id="npcHpBonus" inputmode="numeric" type="number" value="0"/></label>
+</div>
+<div class="grid3" style="align-items:end;">
+<label>Weapon (optional) <input id="npcWeapon" placeholder="leave blank for archetype"/></label>
+<label>AC (optional) <input id="npcAC" inputmode="numeric" placeholder="leave blank for archetype" type="number"/></label>
+<label>Notes (optional) <input id="npcNotes" placeholder="extra notes"/></label>
+</div>
+<p style="font-size:12px; opacity:0.85;">Creates quick NPCs and adds them to the combat tracker. Uses d20 initiative unless you override.</p>
+</section>
+<section class="section section">
+<h2>Psychic Perils / Warp Risk</h2>
+<p id="warpResult">No warp roll yet.</p>
+</section>
+<section class="section section">
+<h2>Grimdark Meters</h2>
+<div class="grid3" style="align-items:end;">
+<label>Corruption (0–100)
+    <input id="corruptionInput" max="100" min="0" type="number" value="0"/>
+</label>
+<label>Insanity (0–100)
+    <input id="insanityInput" max="100" min="0" type="number" value="0"/>
+</label>
+<label>Faith / Zeal (0–100)
+    <input id="faithInput" max="100" min="0" type="number" value="0"/>
+</label>
+</div>
+</section>
+<section class="section section">
+<h2>Faction Reputation</h2>
+<div class="grid3" style="align-items:end;">
+<label>Inquisition Trust
+    <input id="rep_inquisition" max="100" min="-100" type="number" value="0"/>
+</label>
+<label>Mechanicus Favor
+    <input id="rep_mechanicus" max="100" min="-100" type="number" value="0"/>
+</label>
+<label>Ecclesiarchy Approval
+    <input id="rep_ecclesiarchy" max="100" min="-100" type="number" value="0"/>
+</label>
+</div>
+<div class="grid3" style="align-items:end; margin-top:8px;">
+<label>Adeptus Arbites Heat
+    <input id="rep_arbites" max="100" min="-100" type="number" value="0"/>
+</label>
+<label>Rogue Trader Contacts
+    <input id="rep_roguetrader" max="100" min="-100" type="number" value="0"/>
+</label>
+<label>Xenos Taint
+    <input id="rep_xenos" max="100" min="-100" type="number" value="0"/>
+</label>
+</div>
+</section>
+<section class="section section">
+<h2>Print / Table Mode</h2>
+<div class="btnrow" style="display:flex; flex-wrap:wrap; gap:8px; align-items:center;">
+</div>
+</section>
+<section class="section section">
+<h2>Export / Save / Share</h2>
+<div class="btnrow" style="display:flex; flex-wrap:wrap; gap:8px; align-items:center;">
+<button class="button" data-action="export-character" type="button">Export JSON (to box)</button>
+<button class="button" data-action="import-character" type="button">Import JSON (from box)</button>
+<span style="width:12px; display:inline-block;"></span>
+<span style="width:12px; display:inline-block;"></span>
+<span style="width:12px; display:inline-block;"></span>
+<span style="width:12px; display:inline-block;"></span>
+<label style="display:flex; align-items:center; gap:6px; font-size:13px;">
+    Slot
+    <select id="campaignSlot" style="min-width:140px;">
+<option value="1">Campaign Slot 1</option>
+<option value="2">Campaign Slot 2</option>
+<option value="3">Campaign Slot 3</option>
+<option value="4">Campaign Slot 4</option>
+<option value="5">Campaign Slot 5</option>
+</select>
+</label>
+<label style="display:flex; align-items:center; gap:6px; font-size:13px;">
+<input checked="" id="autosaveEnabled" type="checkbox"/> Autosave
+  </label>
+<button class="button" data-action="save-slot" type="button">Save Slot</button>
+<button class="button" data-action="load-slot" type="button">Load Slot</button>
+</div>
+<textarea id="exportData" placeholder="Exported JSON appears here. You can also paste JSON here to importecognitor/ importer." rows="10" style="width:100%; margin-top:10px;"></textarea>
+<p style="margin:8px 0 0; font-size:12px; opacity:0.8;">
+Tip: Campaign slots save to your browser. Export/Download/Share is best for backups and sharing.
+</p>
+</section>
+<section class="section section">
+<h2>Dice Roller</h2>
+<div class="grid2" style="align-items:end;">
+<label>
+    Expression
+    <input id="diceExpr" placeholder="e.g. 1d20+5, 2d10+3, 1d100" type="text" value="1d20"/>
+</label>
+<div style="display:flex; gap:8px; flex-wrap:wrap;">
+<button class="button" data-action="roll-dice" type="button">Roll</button>
+<button class="button" data-action="clear-dice-log" type="button">Clear Log</button>
+<button class="button" data-action="roll-warp-risk" type="button">Warp Risk</button>
+</div>
+</div>
+<div id="diceResult" style="margin-top:8px; font-family:monospace;"></div>
+<div id="diceLog" style="margin-top:10px; max-height:220px; overflow:auto; border:1px solid #333; padding:8px; border-radius:10px; background:#0b0b0b;"></div>
+</section>
+<div id="browserModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.75); z-index:9998;">
+<div class="modal-card" style="max-width:920px; margin:5vh auto; background:#222; color:#f0f0f0; border:1px solid #555; padding:16px; border-radius:12px;">
+<div style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;">
+<h2 id="browserTitle" style="margin:0;">Browse</h2>
+</div>
+<div style="margin-top:10px; display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+<input id="browserSearch" placeholder="Search name, traits, lore..." style="flex:1; min-width:220px;" type="text"/>
+<span id="browserCount" style="opacity:0.85;"></span>
+<span id="browserPage" style="opacity:0.85;"></span>
+<button class="button" data-action="browser-prev" id="browserPrevBtn" type="button">◀ Prev</button>
+<button class="button" data-action="browser-next" id="browserNextBtn" type="button">Next ▶</button>
+</div>
+<div class="table-wrap" style="margin-top:12px; max-height:55vh; overflow:auto;">
+<table>
+<tr><th style="width:55%;">Item</th><th>Traits</th><th style="width:1%;">Action</th></tr>
+<tbody id="browserResultsBody"></tbody>
+</table>
+</div>
+<p style="opacity:0.8; margin-top:10px; font-size:12px;">Tip: click “Select” to populate the dropdown above, then use Equip / Add as normal.</p>
+</div>
+</div>
+<div id="infoModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.75); z-index:9999;">
+<div class="modal-card" style="max-width:720px; margin:5vh auto; background:#222; color:#f0f0f0; border:1px solid #555; padding:16px; border-radius:10px;">
+<div style="display:flex; gap:12px; align-items:flex-start;">
+<div style="flex:1;">
+<div id="infoTitle" style="font-size:18px; font-weight:700; margin-bottom:6px;"></div>
+<div id="infoMeta" style="font-size:12px; opacity:0.85; margin-bottom:10px;"></div>
+<div style="display:flex; gap:8px; align-items:center; margin-bottom:10px;">
+<input id="infoSearch" placeholder="Search inside info (traits, lore, stats)…" style="flex:1; padding:10px; border-radius:10px; border:1px solid #444; background:#111; color:#f0f0f0;" type="text"/>
+</div>
+<div id="infoBody" style="white-space:pre-wrap; line-height:1.35;"></div>
+</div>
+<button class="button" data-action="info-close" style="height:38px;" type="button">Close</button>
+</div>
+<div style="margin-top:10px; font-size:12px; opacity:0.75;">Tip: press Esc to close.</div>
+</div>
+</div>
+<!-- ====== QR MODAL (PC ↔ Mobile quick transfer) ====== -->
+<div id="qrModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.75); z-index:2000;">
+<div style="max-width:720px; margin:5% auto; background:#222; color:#eee; padding:16px; border:1px solid #555; border-radius:12px;">
+<div style="display:flex; gap:10px; align-items:center; justify-content:space-between; flex-wrap:wrap;">
+<h2 style="margin:0;">QR Export</h2>
+</div>
+<p id="qrHint" style="margin:10px 0; font-size:12px; opacity:0.9;"></p>
+<div style="display:flex; justify-content:center;">
+<img alt="QR code" id="qrImg" style="max-width:100%; height:auto; border:1px solid #444; border-radius:10px; background:#fff; padding:10px;"/>
+</div>
+<p style="margin:10px 0 0; font-size:12px; opacity:0.85;">
+      Scan this QR with your phone, then paste the scanned text into <b>QR Import</b> (or into the JSON box and click Import).
+      <br/>Note: QR has size limits; for large characters use <b>Download .json</b> instead.
+    </p>
+</div>
+</div>
+<footer id="appFooter" style="padding:10px; text-align:center; font-size:12px; opacity:0.8; background:#111; border-top:1px solid #333;">
+  Inquisitorial Character Codex <span id="appVersion">v1.7</span> • <span id="appUpdated">Updated 2026-01-28</span>
+</footer>
+<script defer="True" src="data/classes.js"></script>
+<script defer="True" src="data/backgrounds.js"></script>
+<script defer="True" src="data/weapons.js"></script>
+<script defer="True" src="data/armors.js"></script>
+<script defer="True" src="data/gear.js"></script>
+<script defer="True" src="data/psychicPowers.js"></script>
+<script defer="True" src="data/races.js"></script>
+
+<style>
+
+/* =============================
+   THEME-AWARE BUTTONS (v10)
+   ============================= */
+button, .btn{
+  background: linear-gradient(180deg,
+    color-mix(in srgb, var(--accent2) 28%, transparent),
+    color-mix(in srgb, var(--accent2) 10%, transparent)
+  );
+  color: var(--ink);
+  border: 1px solid color-mix(in srgb, var(--accent2) 45%, transparent);
+  box-shadow: 0 10px 22px rgba(0,0,0,.35);
+}
+button:hover, .btn:hover{
+  border-color: color-mix(in srgb, var(--accent2) 65%, transparent);
+  filter: brightness(1.06);
+}
+button:active, .btn:active{
+  transform: translateY(1px);
+  box-shadow: 0 6px 14px rgba(0,0,0,.35);
+}
+
+/* Primary / action buttons */
+button.primary, .btn.primary, .btn-accent,
+button[data-variant="primary"], .btn[data-variant="primary"]{
+  background: linear-gradient(180deg,
+    color-mix(in srgb, var(--accent) 92%, #000),
+    color-mix(in srgb, var(--accent) 72%, #000)
+  );
+  border-color: color-mix(in srgb, var(--accent) 78%, transparent);
+  box-shadow: 0 12px 26px color-mix(in srgb, var(--accent) 22%, transparent), 0 14px 35px rgba(0,0,0,.45);
+}
+button.primary:hover, .btn.primary:hover, .btn-accent:hover,
+button[data-variant="primary"]:hover, .btn[data-variant="primary"]:hover{
+  filter: brightness(1.08);
+}
+
+/* Secondary */
+button.secondary, .btn.secondary,
+button[data-variant="secondary"], .btn[data-variant="secondary"]{
+  background: linear-gradient(180deg,
+    color-mix(in srgb, var(--panel) 85%, var(--accent2)),
+    color-mix(in srgb, var(--panel2) 92%, #000)
+  );
+  border-color: color-mix(in srgb, var(--edge) 70%, transparent);
+}
+
+/* Danger */
+button.danger, .btn.danger,
+button[data-variant="danger"], .btn[data-variant="danger"]{
+  background: linear-gradient(180deg,
+    color-mix(in srgb, var(--bad) 92%, #000),
+    color-mix(in srgb, var(--bad) 72%, #000)
+  );
+  border-color: color-mix(in srgb, var(--bad) 65%, transparent);
+}
+
+/* Small icon buttons / chips that are clickable */
+button.icon, .btn.icon, .chip button, button.chiplike{
+  border-radius: 999px;
+}
+
+/* Disabled */
+button:disabled, .btn:disabled{
+  opacity: .55;
+  cursor: not-allowed;
+  filter: saturate(.6);
+}
+
+
+;
+
+/* =============================
+   v43 Ability Breakdown (5e)
+   ============================= */
+.abil-breakdown{
+  font-size: .85rem;
+  opacity: .85;
+  margin-top: 4px;
+}
+.abil-breakdown code{
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: .85em;
+}
+
+</style>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

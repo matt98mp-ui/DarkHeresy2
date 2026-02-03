@@ -1,0 +1,17 @@
+{
+  "name": "dark-heresy-sheet",
+  "private": true,
+  "version": "2.0.0",
+  "scripts": {
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "eslint .",
+    "check": "node tools/check-syntax.mjs",
+    "check:syntax": "node tools/check-syntax.mjs"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "prettier": "^3.4.2",
+    "playwright": "^1.50.1"
+  }
+}
